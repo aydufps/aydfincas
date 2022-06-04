@@ -1,4 +1,3 @@
-from flask import request
 from flask_restful import Resource, reqparse
 from index import api, db
 from src.auth.domain.models.Usuario import Usuario
