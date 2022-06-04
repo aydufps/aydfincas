@@ -1,3 +1,4 @@
+from flask import jsonify
 from flask_restful import Resource, reqparse
 from index import api, db
 from src.auth.domain.models.Rol import Rol
@@ -19,7 +20,7 @@ class Roles(Resource):
         rol = Rol(description=description)
         db.session.add(rol)
         db.session.commit()
-        return None, 201
+        return rol.toJSON(), 201
 
 
 def loadroles():
