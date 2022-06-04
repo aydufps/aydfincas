@@ -10,18 +10,19 @@ class Login(Resource):
 
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('name', type=str)
         parser.add_argument('email', type=str)
+        parser.add_argument('clave', type=str)
         args = parser.parse_args()
-        isValid = hasRequiredFields(args, ["name", "email"])
+        isValid = hasRequiredFields(args, ["clave", "email"])
         if not isValid:
             return None, 400
-        name = args['name']
+        clave = args['clave']
         email = args['email']
-        user = Usuario(name=name, email=email)
-        db.session.add(user)
-        db.session.commit()
-        return None, 200
+        item = Usuario.query.filter(Usuario.email == email).filter(
+            Usuario.clave == clave).first()
+        if item != None:
+            return item.toJSON(), 200
+        return None, 401
 
 
 def loadauth():
