@@ -17,7 +17,7 @@ loadusers()
 class status (Resource):
     def get(self):
         try:
-            return {'data': 'Api is Running'}
+            return {'data': 'Utilise postman o insomia para hacer solicitudes a los endpoint'}
         except:
             return {'data': 'An Error Occurred during fetching Api'}
 
