@@ -1,5 +1,6 @@
 
 from flask_restful import Resource, reqparse
+from src.administrador.domain.services.usuarios import loadusers
 from src.auth.domain.services.roles import loadroles
 from src.shared.infrastructure.repositories.parsemodel import parsemodel
 from src.auth.domain.models.ModelAdministrador import ModelAdministrador
@@ -23,6 +24,7 @@ class SingIn(Resource):
 
 loadauth()
 loadroles()
+loadusers()
 api.add_resource(SingIn, '/todos/<todo_id>')
 
 

@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse
 from index import api, db
-from src.auth.domain.models.Usuario import Usuario
+from src.administrador.domain.models.Usuario import Usuario
 from src.shared.infrastructure.repositories.parsemodel import hasRequiredFields, parsemodel
 
 
