@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse
 from index import api, db
-from src.administrador.domain.models.Rol import Rol
-from src.shared.infrastructure.repositories.parsemodel import hasRequiredFields, parsemodel
+from modules.administrador.domain.models.Rol import Rol
+from modules.shared.infrastructure.repositories.parsemodel import hasRequiredFields, parsemodel
 
 
 class Roles(Resource):

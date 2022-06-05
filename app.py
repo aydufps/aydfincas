@@ -1,10 +1,13 @@
-
 from flask_restful import reqparse, Resource
-
-from src.administrador.domain.services.usuarios import loadusers
-from src.administrador.domain.services.roles import loadroles
-from src.auth.domain.services.login import loadauth
 from index import app, api
+
+from modules.administrador.domain.services.usuarios import loadusers
+from modules.administrador.domain.services.roles import loadroles
+from modules.auth.domain.services.login import loadauth
+from modules.capataz.domain.services.insumos import insumos
+from modules.veterinario.domain.services.animales import animales
+from modules.veterinario.domain.services.vacunas import vacunas
+
 
 parser = reqparse.RequestParser()
 
@@ -12,6 +15,9 @@ parser = reqparse.RequestParser()
 loadauth()
 loadroles()
 loadusers()
+insumos()
+animales()
+vacunas()
 
 
 class status (Resource):
@@ -19,7 +25,7 @@ class status (Resource):
         try:
             return {'data': 'Utilise postman o insomia para hacer solicitudes a los endpoint'}
         except:
-            return {'data': 'An Error Occurred during fetching Api'}
+            return {'data': 'Algo salio mal'}
 
 
 api.add_resource(status, '/')
