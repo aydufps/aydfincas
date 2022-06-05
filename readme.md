@@ -17,15 +17,22 @@ from modules.capataz.domain.models.Insumo import Insumo
 from modules.veterinario.domain.models.Animal import Animal
 from modules.veterinario.domain.models.Vacuna import Vacuna
 from modules.veterinario.domain.models.AnimalVacuna import AnimalVacuna
+from modules.veterinario.domain.models.models import Association, Parent, Child
 
 db.create_all()
 rolAdm = Rol(id = 1, description = "Adm Rol")
 db.session.add(rolAdm)
+db.session.add(Child(id=1))
+db.session.add(Parent(id=2))
+db.session.add(Association(left_id=2, right_id=1, extra_data="Primer"))
 db.session.commit()
 
 db.metadata.clear()
 
 Rol.query.all()
+Association.query.all()
+Parent.query.all()
+Child.query.all()
 
 ### anexos
 

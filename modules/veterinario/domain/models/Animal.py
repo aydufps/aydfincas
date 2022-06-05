@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from index import db
+from modules.veterinario.domain.models.AnimalVacuna import association_table
 
 
 class Animal(db.Model):
@@ -11,7 +12,8 @@ class Animal(db.Model):
     fechaRegistro = db.Column(
         db.DateTime, nullable=False, default=datetime.now())
     estado = db.Column(db.Boolean, nullable=False, default=True)
-    vacunas = db.relationship("AnimalVacuna", back_populates="animal")
+    #vacunas = db.relationship("AnimalVacuna", back_populates="animal")
+    vacunas = db.relationship("Vacuna", secondary=association_table)
 
     def toJSON(self):
         return {
@@ -19,5 +21,6 @@ class Animal(db.Model):
             "nombre": self.nombre,
             "detalles": self.detalles,
             "estado": self.estado,
-            "fecha_registro": str(self.fechaRegistro.strftime('%Y-%m-%d'))
+            "fecha_registro": str(self.fechaRegistro.strftime('%Y-%m-%d')),
+            "vacunas": str(self.vacunas)
         }

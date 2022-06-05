@@ -1,6 +1,13 @@
 from datetime import datetime
 from index import db
 
+association_table = db.Table(
+    "association",
+    db.metadata,
+    db.Column("animal_id", db.ForeignKey("animales.id")),
+    db.Column("vacuna_id", db.ForeignKey("vacunas.id")),
+)
+
 
 class AnimalVacuna(db.Model):
     __tablename__ = "animales_vacunas"

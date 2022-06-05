@@ -7,7 +7,7 @@ class Vacuna(db.Model):
     nombre = db.Column(db.String, nullable=False)
     detalles = db.Column(db.String, nullable=False)
     estado = db.Column(db.Boolean, nullable=False, default=True)
-    animales = db.relationship("AnimalVacuna", back_populates="vacuna")
+    #animales = db.relationship("AnimalVacuna", back_populates="vacuna")
 
     def toJSON(self):
         return {
