@@ -10,10 +10,9 @@ class Roles(Resource):
 
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('email', type=str)
-        parser.add_argument('clave', type=str)
+        parser.add_argument('descripcion', type=str)
         args = parser.parse_args()
-        isValid = hasRequiredFields(args, ["email", "clave"])
+        isValid = hasRequiredFields(args, ["descripcion"])
         if not isValid:
             return None, 400
         description = args['descripcion']

@@ -5,25 +5,25 @@ from modules.veterinario.domain.models.AnimalVacuna import AnimalVacuna
 from modules.veterinario.domain.models.Vacuna import Vacuna
 
 
-class Vacunas(Resource):
+class AnimalesVacunasRouter(Resource):
     def get(self):
-        return parsemodel(Vacuna.query.all())
+        return parsemodel(AnimalVacuna.query.all())
 
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('nombre', type=str)
-        parser.add_argument('detalles', type=str)
+        parser.add_argument('vacuna_id', type=str)
+        parser.add_argument('animal_id', type=str)
         args = parser.parse_args()
-        isValid = hasRequiredFields(args, ["nombre", "detalles"])
+        isValid = hasRequiredFields(args, ["vacuna_id", "animal_id"])
         if not isValid:
             return None, 400
-        nombre = args['nombre']
-        detalles = args['detalles']
-        vacuna = Vacuna(nombre=nombre, detalles=detalles)
+        animal_id = args['animal_id']
+        vacuna_id = args['vacuna_id']
+        vacuna = AnimalVacuna(animal_id=animal_id, vacuna_id=vacuna_id)
         db.session.add(vacuna)
         db.session.commit()
         return vacuna.toJSON(), 201
 
 
-def vacunas():
-    api.add_resource(Vacunas, '/vacunas')
+def animalesAndVacunasEndpoint():
+    api.add_resource(AnimalesVacunasRouter, '/animales/vacunas')

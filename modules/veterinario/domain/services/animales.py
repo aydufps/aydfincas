@@ -7,7 +7,11 @@ from modules.veterinario.domain.models.Animal import Animal
 
 class Animales(Resource):
     def get(self):
-        return parsemodel(Animal.query.all())
+        items = Animal.query.all()
+        temp = []
+        for item in items:
+            temp.append(item.toJSON())
+        return temp
 
     def post(self):
         parser = reqparse.RequestParser()
