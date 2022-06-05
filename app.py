@@ -1,4 +1,4 @@
-from flask_restful import reqparse, Resource
+from flask_restful import Resource
 from index import app, api
 
 from modules.administrador.domain.services.usuarios import loadusers
@@ -7,9 +7,6 @@ from modules.auth.domain.services.login import loadauth
 from modules.capataz.domain.services.insumos import insumos
 from modules.veterinario.domain.services.animales import animales
 from modules.veterinario.domain.services.vacunas import vacunas
-
-
-parser = reqparse.RequestParser()
 
 
 loadauth()
