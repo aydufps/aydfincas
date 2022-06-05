@@ -1,5 +1,8 @@
-### Deploy en heroku
+# Sistema de Gestion de Gincas Ganaderas
 
+[API_URL](https://aydfincas.herokuapp.com/)
+
+```
 npm i -g heroku
 heroku login
 heroku create aydfincas --buildpack heroku/python
@@ -7,9 +10,11 @@ git add .
 git commit -m "Flask-Restful-Heroku api"
 heroku git:remote -a aydfincas
 git push heroku master
+```
 
-### Sql alchemist
+## SQLAlchemy
 
+```
 from index import db
 from modules.administrador.domain.models.Rol import Rol
 from modules.administrador.domain.models.Usuario import Usuario
@@ -55,17 +60,17 @@ Child.query.all()
 AnimalVacuna.query.all()
 Animal.query.all()
 Vacuna.query.all()
+```
 
-### anexos
+## _Extras_
 
-api url
-
-https://aydfincas.herokuapp.com/
-
-class User(Base):
-id = Column(Integer, primary_key=True, index=True)
-username = Column(String(64), index=True, unique=True)
-email = Column(String(120), index=True, unique=True)
-state = Column(String(30))
-venues = relationship("Venue")
-role = Column(String(10), default="customer")
+```
+try:
+<use session>
+session.commit()
+except:
+session.rollback()
+raise
+finally:
+session.close() # optional, depends on use case
+```
