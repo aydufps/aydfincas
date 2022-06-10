@@ -7,6 +7,7 @@ from modules.auth.domain.services.login import loadauth
 from modules.capataz.domain.services.insumos import insumos
 from modules.veterinario.domain.services.animales import animales
 from modules.veterinario.domain.services.animales_vacunas import animalesAndVacunasEndpoint
+from modules.veterinario.domain.services.enfermedades import enfermedades
 from modules.veterinario.domain.services.vacunas import vacunas
 
 
@@ -17,6 +18,7 @@ insumos()
 animales()
 vacunas()
 animalesAndVacunasEndpoint()
+enfermedades()
 
 
 class status (Resource):

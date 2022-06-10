@@ -60,6 +60,17 @@ Child.query.all()
 AnimalVacuna.query.all()
 Animal.query.all()
 Vacuna.query.all()
+
+
+###
+from modules.veterinario.domain.models.Enfermedad import Enfermedad
+db.create_all()
+db.session.commit()
+
+###
+
+
+
 ```
 
 ## _Extras_
