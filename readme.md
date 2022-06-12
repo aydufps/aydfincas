@@ -14,6 +14,10 @@ git push heroku master
 
 ## SQLAlchemy
 
+from modules.administrador.domain.models.Models import User
+from modules.administrador.domain.models.Models import Product
+from modules.administrador.domain.models.Models import Order
+
 ```
 from index import db
 from modules.administrador.domain.models.Rol import Rol
@@ -23,6 +27,7 @@ from modules.veterinario.domain.models.Vacuna import Vacuna
 from modules.veterinario.domain.models.Animal import Animal
 db.create_all()
 db.session.commit()
+
 from modules.veterinario.domain.models.AnimalVacuna import AnimalVacuna
 Animal.vacunas = db.relationship("AnimalVacuna") #warning ya existe la clave
 db.create_all()

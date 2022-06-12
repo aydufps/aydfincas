@@ -1,3 +1,4 @@
+from flask import jsonify
 from flask_restful import Resource, reqparse
 from index import api, db
 from modules.administrador.domain.models.Rol import Rol
@@ -6,7 +7,8 @@ from modules.shared.infrastructure.repositories.parsemodel import hasRequiredFie
 
 class Roles(Resource):
     def get(self):
-        return parsemodel(Rol.query.all())
+        data = Rol.query.all()
+        return [rol.asJSON() for rol in data]
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -17,9 +19,13 @@ class Roles(Resource):
             return None, 400
         description = args['descripcion']
         rol = Rol(description=description)
-        db.session.add(rol)
-        db.session.commit()
-        return rol.toJSON(), 201
+        try:
+            db.session.add(rol)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, 400
+        return rol.asJSON(), 201
 
 
 def loadroles():

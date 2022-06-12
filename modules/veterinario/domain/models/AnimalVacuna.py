@@ -1,21 +1,24 @@
-from datetime import datetime
 from index import db
+from modules.shared.infrastructure.helpers.sqlalchemyst import table_args
 
 
 class AnimalVacuna(db.Model):
     __tablename__ = "animales_vacunas"
-    animal_id = db.Column(db.ForeignKey("animales.id"), primary_key=True)
-    vacuna_id = db.Column(db.ForeignKey("vacunas.id"), primary_key=True)
+    __table_args__ = table_args
+    animal_id = db.Column(db.ForeignKey("animales.id"),
+                          nullable=False, primary_key=True)
+    vacuna_id = db.Column(db.Integer, db.ForeignKey("vacunas.id"),
+                          nullable=False, primary_key=True)
     estado = db.Column(db.Boolean, nullable=False, default=True)
-    fechaRegistro = db.Column(
-        db.DateTime, nullable=False, default=datetime.now())
-    vacuna = db.relationship("Vacuna")
+    created_at = db.Column(
+        db.DateTime, server_default=db.func.current_timestamp())
+    vacunas = db.relationship("Vacuna")
+    animales = db.relationship("Animal")
 
-    def toJSON(self):
+    def asJSON(self):
         return {
             "animal_id": self.animal_id,
             "vacuna_id": self.vacuna_id,
             "estado": self.estado,
-            "fecha_registro": str(self.fechaRegistro.strftime('%Y-%m-%d')),
-            # "vacunas":  self.vacunas[0].toJSON()
+            "create_at": str(self.created_at.strftime('%Y-%m-%d')),
         }

@@ -7,11 +7,7 @@ from modules.veterinario.domain.models.Animal import Animal
 
 class Animales(Resource):
     def get(self):
-        items = Animal.query.all()
-        temp = []
-        for item in items:
-            temp.append(item.toJSON())
-        return temp
+        return [rol.asJSON() for rol in Animal.query.all()]
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -24,9 +20,13 @@ class Animales(Resource):
         nombre = args['nombre']
         detalles = args['detalles']
         animal = Animal(nombre=nombre, detalles=detalles)
-        db.session.add(animal)
-        db.session.commit()
-        return animal.toJSON(), 201
+        try:
+            db.session.add(animal)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, 400
+        return animal.asJSON(), 201
 
 
 def animales():

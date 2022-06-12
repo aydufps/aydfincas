@@ -6,7 +6,7 @@ from modules.shared.infrastructure.repositories.parsemodel import hasRequiredFie
 
 class Insumos(Resource):
     def get(self):
-        return parsemodel(Insumo.query.all())
+        return [i.asJSON() for i in Insumo.query.all()]
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -21,9 +21,13 @@ class Insumos(Resource):
         detalles = args['detalles']
         unidades = args['unidades']
         insumo = Insumo(nombre=nombre, detalles=detalles, unidades=unidades)
-        db.session.add(insumo)
-        db.session.commit()
-        return insumo.toJSON(), 201
+        try:
+            db.session.add(insumo)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, 400
+        return insumo.asJSON(), 201
 
 
 def insumos():

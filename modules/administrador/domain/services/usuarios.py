@@ -1,12 +1,12 @@
 from flask_restful import Resource, reqparse
 from index import api, db
 from modules.administrador.domain.models.Usuario import Usuario
-from modules.shared.infrastructure.repositories.parsemodel import hasRequiredFields, parsemodel
+from modules.shared.infrastructure.repositories.parsemodel import hasRequiredFields
 
 
 class Usuarios(Resource):
     def get(self):
-        return parsemodel(Usuario.query.all())
+        return [rol.asJSON() for rol in Usuario.query.all()]
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -23,21 +23,25 @@ class Usuarios(Resource):
         rol_id = args['rol_id']
         clave = args['clave']
         usuario = Usuario(name=name, email=email, rol_id=rol_id, clave=clave)
-        db.session.add(usuario)
-        db.session.commit()
-        return usuario.toJSON(), 201
+        try:
+            db.session.add(usuario)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, 400
+        return usuario.asJSON(), 201
 
 
 class UsuariosRol(Resource):
     def get(self, rol_id):
-        return parsemodel(Usuario.query.filter(Usuario.rol_id == rol_id))
+        return [i.asJSON() for i in Usuario.query.filter(Usuario.rol_id == rol_id)]
 
 
 class UsuarioR(Resource):
     def get(self, id):
         item = Usuario.query.filter(Usuario.id == id).first()
         if item != None:
-            return item.toJSON()
+            return item.asJSON()
         return None
 
 

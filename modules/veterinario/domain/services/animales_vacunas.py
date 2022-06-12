@@ -1,13 +1,14 @@
 from flask_restful import Resource, reqparse
+from pymysql import IntegrityError
+import pymysql
 from index import api, db
 from modules.shared.infrastructure.repositories.parsemodel import hasRequiredFields, parsemodel
 from modules.veterinario.domain.models.AnimalVacuna import AnimalVacuna
-from modules.veterinario.domain.models.Vacuna import Vacuna
 
 
 class AnimalesVacunasRouter(Resource):
     def get(self):
-        return parsemodel(AnimalVacuna.query.all())
+        return [i.asJSON() for i in AnimalVacuna.query.all()]
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -20,9 +21,14 @@ class AnimalesVacunasRouter(Resource):
         animal_id = args['animal_id']
         vacuna_id = args['vacuna_id']
         vacuna = AnimalVacuna(animal_id=animal_id, vacuna_id=vacuna_id)
-        db.session.add(vacuna)
-        db.session.commit()
-        return vacuna.toJSON(), 201
+
+        try:
+            db.session.add(vacuna)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, 400
+        return vacuna.asJSON(), 201
 
 
 def animalesAndVacunasEndpoint():

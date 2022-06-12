@@ -1,53 +1,25 @@
-from datetime import datetime
-from flask import jsonify
-
 from index import db
-from modules.shared.infrastructure.repositories.parsemodel import parsemodel
+from modules.shared.infrastructure.helpers.sqlalchemyst import table_args
 
 
 class Animal(db.Model):
     __tablename__ = "animales"
+    __table_args__ = table_args
+
     id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String, nullable=False)
-    detalles = db.Column(db.String, nullable=False, default="")
-    fechaRegistro = db.Column(
-        db.DateTime, nullable=False, default=datetime.now())
+    nombre = db.Column(db.String(50), nullable=False)
+    detalles = db.Column(db.String(100), nullable=False, default="")
     estado = db.Column(db.Boolean, nullable=False, default=True)
     vacunas = db.relationship("AnimalVacuna")
+    created_at = db.Column(
+        db.DateTime, server_default=db.func.current_timestamp())
 
-    def toJSON(self):
-        items = self.vacunas
-        vacunas = []
-        for item in items:
-            vacunas.append(item.vacuna.toJSON())
-
+    def asJSON(self):
         return {
             "id": self.id,
             "nombre": self.nombre,
             "detalles": self.detalles,
             "estado": self.estado,
-            "fecha_registro": str(self.fechaRegistro.strftime('%Y-%m-%d')),
-            "vacunas":  vacunas
+            "vacunas": [i.asJSON() for i in self.vacunas],
+            "create_at": str(self.created_at.strftime('%Y-%m-%d')),
         }
-
-
-''' class Animal(db.Model):
-    __tablename__ = "animales"
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    nombre = db.Column(db.String, nullable=False)
-    detalles = db.Column(db.String, nullable=False)
-    fechaRegistro = db.Column(
-        db.DateTime, nullable=False, default=datetime.now())
-    estado = db.Column(db.Boolean, nullable=False, default=True)
-    # vacunas = db.relationship("AnimalVacuna", back_populates="animal")
-    vacunas = db.relationship("Vacuna", secondary=association_table)
-
-    def toJSON(self):
-        return {
-            "id": self.id,
-            "nombre": self.nombre,
-            "detalles": self.detalles,
-            "estado": self.estado,
-            "fecha_registro": str(self.fechaRegistro.strftime('%Y-%m-%d')),
-            "vacunas": str(self.vacunas)
-        } '''

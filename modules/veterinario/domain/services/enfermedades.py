@@ -8,7 +8,7 @@ from modules.veterinario.domain.models.Vacuna import Vacuna
 
 class Enfermedades(Resource):
     def get(self):
-        return parsemodel(Enfermedad.query.all())
+        return [i.asJSON() for i in Enfermedad.query.all()]
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -21,9 +21,13 @@ class Enfermedades(Resource):
         nombre = args['nombre']
         detalles = args['detalles']
         enfermedad = Enfermedad(nombre=nombre, detalles=detalles)
-        db.session.add(enfermedad)
-        db.session.commit()
-        return enfermedad.toJSON(), 201
+        try:
+            db.session.add(enfermedad)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, 400
+        return enfermedad.asJSON(), 201
 
 
 def enfermedades():
