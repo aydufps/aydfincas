@@ -6,6 +6,7 @@ from sqlalchemy import MetaData, engine_from_config
 from flask_cors import CORS
 
 app = Flask(__name__)
+app.debug = False
 api = Api(app)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{}'.format(
