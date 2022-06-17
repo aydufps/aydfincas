@@ -31,11 +31,12 @@ class Animales(Resource):
                             help="El campo detalles es obligatorio")
         parser.add_argument('fecha_nacimiento', type=valid_date, required=True,
                             help="El campo fecha_nacimiento es obligatorio")
+        parser.add_argument('genero', type=bool)
         args = parser.parse_args()
         nombre = args['nombre']
         detalles = args['detalles']
         animal = Animal(nombre=nombre, detalles=detalles,
-                        padre_id=args["padre_id"], madre_id=args["madre_id"], fecha_nacimiento=args["fecha_nacimiento"])
+                        padre_id=args["padre_id"], madre_id=args["madre_id"], fecha_nacimiento=args["fecha_nacimiento"], genero=args["genero"])
         try:
             db.session.add(animal)
             db.session.commit()
