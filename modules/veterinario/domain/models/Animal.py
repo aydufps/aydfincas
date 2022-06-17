@@ -10,6 +10,7 @@ class Animal(db.Model):
     nombre = db.Column(db.String(50), nullable=False)
     detalles = db.Column(db.String(100), nullable=False, default="")
     estado = db.Column(db.Boolean, nullable=False, default=True)
+    genero = db.Column(db.Boolean,  nullable=False, default=False)
     padre_id = db.Column(db.Integer, db.ForeignKey("animales.id"))
     madre_id = db.Column(db.Integer, db.ForeignKey("animales.id"))
     fecha_nacimiento = db.Column(db.Date, nullable=False)
@@ -23,6 +24,7 @@ class Animal(db.Model):
             "nombre": self.nombre,
             "detalles": self.detalles,
             "estado": self.estado,
+            "genero": self.genero,
             "padre_id": self.padre_id,
             "madre_id": self.madre_id,
             "vacunas": [i.asJSON() for i in self.vacunas],
