@@ -46,5 +46,19 @@ class Animales(Resource):
         return animal.asJSON(), 201
 
 
+class AnimalRouter(Resource):
+
+    def delete(self, id):
+        item = Animal.query.get(id)
+        try:
+            db.session.delete(item)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, 400
+        return item.asJSON(), 204
+
+
 def animales():
     api.add_resource(Animales, '/animales')
+    api.add_resource(AnimalRouter, '/animal/<int:id>')

@@ -30,5 +30,19 @@ class Insumos(Resource):
         return insumo.asJSON(), 201
 
 
+class SingleInsumo(Resource):
+
+    def delete(self, id):
+        item = Insumo.query.get(id)
+        try:
+            db.session.delete(item)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, 400
+        return item.asJSON(), 204
+
+
 def insumos():
     api.add_resource(Insumos, '/insumos')
+    api.add_resource(SingleInsumo, '/insumo/<int:id>')

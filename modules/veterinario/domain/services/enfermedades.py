@@ -30,5 +30,19 @@ class Enfermedades(Resource):
         return enfermedad.asJSON(), 201
 
 
+class EnfermedadRouter(Resource):
+
+    def delete(self, id):
+        item = Enfermedad.query.get(id)
+        try:
+            db.session.delete(item)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, 400
+        return item.asJSON(), 204
+
+
 def enfermedades():
     api.add_resource(Enfermedades, '/enfermedades')
+    api.add_resource(EnfermedadRouter, '/enfermedad/<int:id>')

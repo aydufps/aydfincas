@@ -29,5 +29,19 @@ class Vacunas(Resource):
         return vacuna.asJSON(), 201
 
 
+class VacunaRouter(Resource):
+
+    def delete(self, id):
+        item = Vacuna.query.get(id)
+        try:
+            db.session.delete(item)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, 400
+        return item.asJSON(), 204
+
+
 def vacunas():
     api.add_resource(Vacunas, '/vacunas')
+    api.add_resource(VacunaRouter, '/vacuna/<int:id>')

@@ -45,7 +45,21 @@ class UsuarioR(Resource):
         return None
 
 
+class ItemRouter(Resource):
+
+    def delete(self, id):
+        item = Usuario.query.get(id)
+        try:
+            db.session.delete(item)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, 400
+        return item.asJSON(), 204
+
+
 def loadusers():
     api.add_resource(Usuarios, '/usuarios')
     api.add_resource(UsuarioR, '/usuarios/<int:id>')
     api.add_resource(UsuariosRol, '/usuarios/rol/<int:rol_id>')
+    api.add_resource(ItemRouter, '/usuario/<int:id>')
