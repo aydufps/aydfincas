@@ -45,6 +45,33 @@ class Animales(Resource):
             return None, 400
         return animal.asJSON(), 201
 
+    def put(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('id', type=str, required=True,
+                            help="El campo id es obligatorio")
+        parser.add_argument('nombre', type=str)
+        parser.add_argument('padre_id', type=str)
+        parser.add_argument('madre_id', type=str)
+        parser.add_argument('detalles', type=str)
+        parser.add_argument('fecha_nacimiento', type=valid_date)
+        parser.add_argument('genero', type=bool)
+        args = parser.parse_args()
+        id = args['id']
+        item = Animal.query.get_or_404(id)
+        item.nombre = args['nombre']
+        item.detalles = args['detalles']
+        item.padre_id = args['padre_id']
+        item.madre_id = args['madre_id']
+        item.fecha_nacimiento = args['fecha_nacimiento']
+        item.genero = args['genero']
+        try:
+            db.session.add(item)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, 400
+        return item.asJSON(), 201
+
 
 class AnimalRouter(Resource):
 

@@ -15,7 +15,7 @@ class Usuarios(Resource):
         parser.add_argument('rol_id', type=str)
         parser.add_argument('clave', type=str)
         args = parser.parse_args()
-        isValid = hasRequiredFields(args, ["name", "email", "rol_id", "clave"])
+        isValid = hasRequiredFields(args, ["name", "email", "rol_id"])
         if not isValid:
             return None, 400
         name = args['name']
@@ -30,6 +30,27 @@ class Usuarios(Resource):
             db.session.rollback()
             return None, 400
         return usuario.asJSON(), 201
+
+    def put(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('id', type=str, required=True,
+                            help="El campo id es obligatorio")
+        parser.add_argument('nombre', type=str)
+        parser.add_argument('correo', type=str)
+        parser.add_argument('rol_id', type=str)
+        args = parser.parse_args()
+        id = args['id']
+        item = Usuario.query.get_or_404(id)
+        item.name = args['nombre']
+        item.email = args['correo']
+        item.rol_id = args['rol_id']
+        try:
+            db.session.add(item)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, 400
+        return item.asJSON(), 201
 
 
 class UsuariosRol(Resource):

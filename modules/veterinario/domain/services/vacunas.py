@@ -28,6 +28,25 @@ class Vacunas(Resource):
             return None, 400
         return vacuna.asJSON(), 201
 
+    def put(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('id', type=str, required=True,
+                            help="El campo id es obligatorio")
+        parser.add_argument('nombre', type=str)
+        parser.add_argument('detalles', type=str)
+        args = parser.parse_args()
+        id = args['id']
+        item = Vacuna.query.get_or_404(id)
+        item.nombre = args['nombre']
+        item.detalles = args['detalles']
+        try:
+            db.session.add(item)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, 400
+        return item.asJSON(), 201
+
 
 class VacunaRouter(Resource):
 

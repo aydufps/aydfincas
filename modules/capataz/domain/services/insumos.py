@@ -29,6 +29,30 @@ class Insumos(Resource):
             return None, 400
         return insumo.asJSON(), 201
 
+    def put(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('id', type=str, required=True,
+                            help="El campo id es obligatorio")
+        parser.add_argument('nombre', type=str)
+        parser.add_argument('detalles', type=str)
+        parser.add_argument('unidades', type=str)
+        args = parser.parse_args()
+        id = args['id']
+        item = Insumo.query.get_or_404(id)
+        isValid = hasRequiredFields(args, ["nombre", "detalles", "unidades"])
+        if not isValid:
+            return None, 400
+        item.nombre = args['nombre']
+        item.detalles = args['detalles']
+        item.unidades = args['unidades']
+        try:
+            db.session.add(item)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, 400
+        return item.asJSON(), 201
+
 
 class SingleInsumo(Resource):
 
