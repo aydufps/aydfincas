@@ -3,6 +3,16 @@ from index import api, db
 from modules.shared.infrastructure.repositories.parsemodel import hasRequiredFields, parsemodel
 from modules.veterinario.domain.models.AnimalVacuna import AnimalVacuna
 from modules.veterinario.domain.models.Vacuna import Vacuna
+import argparse
+from datetime import date, datetime
+
+
+def valid_date(s):
+    try:
+        return datetime.strptime(s, "%Y-%m-%d")
+    except ValueError:
+        msg = "Not a valid date: '{0}'.".format(s)
+        raise argparse.ArgumentTypeError(msg)
 
 
 class Vacunas(Resource):
@@ -11,15 +21,20 @@ class Vacunas(Resource):
 
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('nombre', type=str)
-        parser.add_argument('detalles', type=str)
+        parser.add_argument('nombre', type=str, required=True,
+                            help="El campo nombre es obligatorio")
+        parser.add_argument('detalles', type=str, required=True,
+                            help="El campo detalles es obligatorio")
+        parser.add_argument('fecha_vencimiento_lote', type=valid_date, required=True,
+                            help="El campo fecha_vencimiento_lote es obligatorio")
+        parser.add_argument('unidades', type=int)
         args = parser.parse_args()
-        isValid = hasRequiredFields(args, ["nombre", "detalles"])
-        if not isValid:
-            return None, 400
         nombre = args['nombre']
         detalles = args['detalles']
-        vacuna = Vacuna(nombre=nombre, detalles=detalles)
+        fecha_vencimiento_lote = args['fecha_vencimiento_lote']
+        unidades = args['unidades']
+        vacuna = Vacuna(nombre=nombre, detalles=detalles,
+                        fecha_vencimiento_lote=fecha_vencimiento_lote, unidades=unidades)
         try:
             db.session.add(vacuna)
             db.session.commit()
@@ -34,11 +49,15 @@ class Vacunas(Resource):
                             help="El campo id es obligatorio")
         parser.add_argument('nombre', type=str)
         parser.add_argument('detalles', type=str)
+        parser.add_argument('unidades', type=int)
+        parser.add_argument('fecha_vencimiento_lote', type=valid_date)
         args = parser.parse_args()
         id = args['id']
         item = Vacuna.query.get_or_404(id)
         item.nombre = args['nombre']
         item.detalles = args['detalles']
+        item.unidades = args['unidades']
+        item.fecha_vencimiento_lote = args['fecha_vencimiento_lote']
         try:
             db.session.add(item)
             db.session.commit()

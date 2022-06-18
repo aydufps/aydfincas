@@ -12,6 +12,8 @@ class Vacuna(db.Model):
     animales = db.relationship("AnimalVacuna")
     created_at = db.Column(
         db.DateTime, server_default=db.func.current_timestamp())
+    fecha_vencimiento_lote = db.Column(db.Date, nullable=False)
+    unidades = db.Column(db.Integer, nullable=False, default=0)
 
     def asJSON(self):
         return {
@@ -19,6 +21,8 @@ class Vacuna(db.Model):
             "nombre": self.nombre,
             "detalles": self.detalles,
             "estado": self.estado,
+            "unidades": self.unidades,
             "create_at": str(self.created_at.strftime('%Y-%m-%d')),
             "animales": [i.asJSON() for i in self.animales],
+            "fecha_vencimiento_lote": str(self.fecha_vencimiento_lote.strftime('%Y-%m-%d'))
         }
