@@ -8,7 +8,7 @@ from modules.administrador.domain.services.usuarios import UsuarioR
 
 
 class SendEmail(object):
-    def sendTextEmail(self, emisor, receptor, subject, message, password, name):
+    def sendTextEmail(self, emisor, receptor, subject, message, password, name, id):
         # create message object instance
         msg = MIMEMultipart()
 
@@ -127,7 +127,7 @@ class SendEmail(object):
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td class="esd-block-button es-p25t h-auto" align="center" height="73"><span class="es-button-border" style="border-radius: 5px; border-width: 2px; border-color: #333333; background: #132743;"><a href="https://viewstripo.email/" class="es-button es-button-1655593772118" target="_blank" style="border-radius: 5px; border-top-width: 10px; border-bottom-width: 10px; background: #132743; border-color: #132743; color: #f8efd4; font-family: helvetica, &quot;helvetica neue&quot;, arial, verdana, sans-serif; font-size: 20px;">Cambiar mi clave</a></span></td>
+                                                                                    <td class="esd-block-button es-p25t h-auto" align="center" height="73"><span class="es-button-border" style="border-radius: 5px; border-width: 2px; border-color: #333333; background: #132743;"><a href="@url" class="es-button es-button-1655593772118" target="_blank" style="border-radius: 5px; border-top-width: 10px; border-bottom-width: 10px; background: #132743; border-color: #132743; color: #f8efd4; font-family: helvetica, &quot;helvetica neue&quot;, arial, verdana, sans-serif; font-size: 20px;">Cambiar mi clave</a></span></td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
@@ -152,8 +152,11 @@ class SendEmail(object):
 
 </html>
         """
+        url = "https://aydufps.github.io/vistas/registrarclave/index.html?id=" + \
+            str(id)
         html = html.replace("\xf3", " ")
         html = html.replace("alias", name)
+        html = html.replace("@url", url)
         part2 = MIMEText(html, 'html')
         # setup the parameters of the message
         # password =
@@ -188,11 +191,11 @@ obj = SendEmail()
 obj.sendTextEmail(emisor, receptor, asunto, mensaje, clave) '''
 
 
-def enviarEmail(correo, name):
+def enviarEmail(correo, name, id):
     emisor = "jefersonurielhc@ufps.edu.co"
     receptor = correo  # "asimplemailmore@gmail.com"
     asunto = "Cambio de clave"
     mensaje = ""
     clave = "mjsytbqwyfgsgzdg"
     obj = SendEmail()
-    obj.sendTextEmail(emisor, receptor, asunto, mensaje, clave, name)
+    obj.sendTextEmail(emisor, receptor, asunto, mensaje, clave, name, id)

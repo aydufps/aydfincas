@@ -22,7 +22,7 @@ class Mail(Resource):
         args = parser.parse_args()
         item = Usuario.query.filter(Usuario.email == args["correo"]).first()
         if item != None:
-            enviarEmail(args["correo"], item.name)
+            enviarEmail(args["correo"], item.name, item.id)
             return "Se ha enviado un correo de recuperacion de clave"
         return "No existe este usuario"
 
