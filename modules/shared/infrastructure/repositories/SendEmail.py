@@ -4,9 +4,11 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
 
+from modules.administrador.domain.services.usuarios import UsuarioR
+
 
 class SendEmail(object):
-    def sendTextEmail(self, emisor, receptor, subject, message, password):
+    def sendTextEmail(self, emisor, receptor, subject, message, password, name):
         # create message object instance
         msg = MIMEMultipart()
 
@@ -82,7 +84,7 @@ class SendEmail(object):
                                                                             <tbody>
                                                                                 <tr>
                                                                                     <td align="left" class="esd-block-text">
-                                                                                        <p style="font-size: 28px; font-family: helvetica, 'helvetica neue', arial, verdana, sans-serif; color: #132743;"><strong>Gestión&nbsp;de fincas ganaderas</strong></p>
+                                                                                        <p style="font-size: 28px; font-family: helvetica, 'helvetica neue', arial, verdana, sans-serif; color: #132743;"><strong>Gestion&nbsp;de fincas ganaderas</strong></p>
                                                                                     </td>
                                                                                 </tr>
                                                                             </tbody>
@@ -151,7 +153,7 @@ class SendEmail(object):
 </html>
         """
         html = html.replace("\xf3", " ")
-        html = html.replace("alias", "Maria Julieta")
+        html = html.replace("alias", name)
         part2 = MIMEText(html, 'html')
         # setup the parameters of the message
         # password =
@@ -186,14 +188,11 @@ obj = SendEmail()
 obj.sendTextEmail(emisor, receptor, asunto, mensaje, clave) '''
 
 
-def enviarEmail():
+def enviarEmail(correo, name):
     emisor = "jefersonurielhc@ufps.edu.co"
-    receptor = "asimplemailmore@gmail.com"
+    receptor = correo  # "asimplemailmore@gmail.com"
     asunto = "Cambio de clave"
     mensaje = ""
     clave = "mjsytbqwyfgsgzdg"
     obj = SendEmail()
-    obj.sendTextEmail(emisor, receptor, asunto, mensaje, clave)
-
-
-# enviarEmail()
+    obj.sendTextEmail(emisor, receptor, asunto, mensaje, clave, name)
