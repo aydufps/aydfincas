@@ -25,12 +25,6 @@ class Mail(Resource):
             enviarEmail(args["correo"], item.name)
             return "Se ha enviado un correo de recuperacion de clave"
         return "No existe este usuario"
-        # msg = Message('Hello', sender='jefersonurielhc@ufps.edu.co',
-        #              recipients = ['asimplemailmore@gmail.com'])
-        # msg.body = "Hello Flask message sent from Flask-Mail"
-        # mail.send(msg)
-        enviarEmail(args["correo"])
-        return "Sent"
 
 
 def loadmail():
