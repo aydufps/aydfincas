@@ -5,6 +5,7 @@ from modules.administrador.domain.services.usuarios import loadusers
 from modules.administrador.domain.services.roles import loadroles
 from modules.auth.domain.services.login import loadauth
 from modules.capataz.domain.services.insumos import insumos
+from modules.shared.domain.services.mail import loadmail
 from modules.veterinario.domain.services.animales import animales
 from modules.veterinario.domain.services.animales_vacunas import animalesAndVacunasEndpoint
 from modules.veterinario.domain.services.enfermedades import enfermedades
@@ -19,6 +20,7 @@ animales()
 vacunas()
 animalesAndVacunasEndpoint()
 enfermedades()
+loadmail()
 
 
 class status (Resource):
