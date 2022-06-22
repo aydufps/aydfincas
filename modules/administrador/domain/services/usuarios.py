@@ -21,8 +21,7 @@ class Usuarios(Resource):
         name = args['name']
         email = args['email']
         rol_id = args['rol_id']
-        clave = args['clave']
-        usuario = Usuario(name=name, email=email, rol_id=rol_id, clave=clave)
+        usuario = Usuario(name=name, email=email, rol_id=rol_id)
         try:
             db.session.add(usuario)
             db.session.commit()

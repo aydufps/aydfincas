@@ -9,7 +9,7 @@ class Usuario(db.Model):
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
     rol_id = db.Column(db.Integer, db.ForeignKey("roles.id"))
-    clave = db.Column(db.String(200), nullable=False)
+    clave = db.Column(db.String(200), nullable=True)
     estado = db.Column(db.Boolean, nullable=False, default=True)
     created_at = db.Column(
         db.DateTime, server_default=db.func.current_timestamp())
