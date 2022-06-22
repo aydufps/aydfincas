@@ -11,8 +11,10 @@ class Animal(db.Model):
     detalles = db.Column(db.String(100), nullable=False, default="")
     estado = db.Column(db.Boolean, nullable=False, default=True)
     genero = db.Column(db.Boolean,  nullable=False, default=False)
-    padre_id = db.Column(db.Integer, db.ForeignKey("animales.id"))
-    madre_id = db.Column(db.Integer, db.ForeignKey("animales.id"))
+    padre_id = db.Column(db.Integer, db.ForeignKey(
+        "animales.id"), nullable=True)
+    madre_id = db.Column(db.Integer, db.ForeignKey(
+        "animales.id"), nullable=True)
     fecha_nacimiento = db.Column(db.Date, nullable=False)
     vacunas = db.relationship("AnimalVacuna")
     created_at = db.Column(
