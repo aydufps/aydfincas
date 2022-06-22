@@ -4,8 +4,6 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
 
-from modules.administrador.domain.services.usuarios import UsuarioR
-
 
 class SendEmail(object):
     def sendTextEmail(self, emisor, receptor, subject, message, password, name, id):

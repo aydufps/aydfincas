@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse
 from index import api, db
 from modules.administrador.domain.models.Usuario import Usuario
+from modules.shared.infrastructure.repositories.SendEmail import enviarEmail
 from modules.shared.infrastructure.repositories.parsemodel import hasRequiredFields
 
 
@@ -28,6 +29,8 @@ class Usuarios(Resource):
         except Exception as e:
             db.session.rollback()
             return None, 400
+        finally:
+            enviarEmail(email, name, usuario.id)
         return usuario.asJSON(), 201
 
     def put(self):
