@@ -21,5 +21,6 @@ class Usuario(db.Model):
             "correo": self.email,
             "rol_id": self.rol_id,
             "estado": self.estado,
+            # "clave": self.clave,
             "create_at": str(self.created_at.strftime('%Y-%m-%d')),
         }

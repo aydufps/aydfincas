@@ -150,7 +150,7 @@ class SendEmail(object):
 
 </html>
         """
-        url = "https://aydufps.github.io/ vistas/registrarclave/index.html?id=" + \
+        url = "https://aydufps.github.io/vistas/registrarclave/index.html?id=" + \
             str(id)
         html = html.replace("\xf3", " ")
         html = html.replace("alias", name)
