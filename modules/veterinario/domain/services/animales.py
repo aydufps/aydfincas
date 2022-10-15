@@ -7,6 +7,7 @@ from modules.administrador.domain.models.Rol import Rol
 from modules.shared.infrastructure.repositories.parsemodel import (
     hasRequiredFields, parsemodel)
 from modules.veterinario.domain.models.Animal import Animal
+from modules.veterinario.domain.models.AnimalVacuna import AnimalVacuna
 
 
 def valid_date(s):
@@ -20,6 +21,7 @@ def valid_date(s):
 class Animales(Resource):
     def get(self):
         return [rol.asJSON() for rol in Animal.query.all()]
+        # return db.session.query(AnimalVacuna.animales).filter(AnimalVacuna.animal_id == id).all()
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -57,19 +59,23 @@ class Animales(Resource):
         parser.add_argument('detalles', type=str)
         parser.add_argument('fecha_nacimiento', type=valid_date)
         parser.add_argument('genero', type=bool)
+        parser.add_argument('enVenta', type=bool)
         args = parser.parse_args()
         id = args['id']
         item = Animal.query.get_or_404(id)
-        item.nombre = args['nombre']
-        item.detalles = args['detalles']
-        item.padre_id = args['padre_id']
-        item.madre_id = args['madre_id']
-        item.fecha_nacimiento = args['fecha_nacimiento']
-        item.genero = args['genero']
+        item.nombre = item.nombre if args["nombre"] is None else args["nombre"]
+        item.detalles = item.detalles if args["detalles"] is None else args["detalles"]
+        item.padre_id = item.padre_id if args["padre_id"] is None else args["padre_id"]
+        item.madre_id = item.madre_id if args["madre_id"] is None else args["madre_id"]
+        item.fecha_nacimiento = item.fecha_nacimiento if args[
+            "fecha_nacimiento"] is None else args["fecha_nacimiento"]
+        item.genero = item.genero if args["genero"] is None else args["genero"]
+        item.enVenta = item.genero if args["enVenta"] is None else args["enVenta"]
         try:
             db.session.add(item)
             db.session.commit()
         except Exception as e:
+            print(e)
             db.session.rollback()
             return None, 400
         return item.asJSON(), 201
@@ -90,6 +96,12 @@ class AnimalRouter(Resource):
         return item.asJSON(), 204
 
 
+class AnimalesEnVenta(Resource):
+    def get(self):
+        return [i.asJSON() for i in Animal.query.filter(Animal.enVenta == True)]
+
+
 def animales():
     api.add_resource(Animales, '/animales')
+    api.add_resource(AnimalesEnVenta, '/animales-en-venta')
     api.add_resource(AnimalRouter, '/animal/<int:id>')
