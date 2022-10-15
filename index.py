@@ -1,10 +1,12 @@
 import os
+
 from flask import Flask
+from flask_cors import CORS
+from flask_mail import Mail
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData, engine_from_config
-from flask_cors import CORS
-from flask_mail import Mail
+
 app = Flask(__name__)
 app.debug = False
 api = Api(app)

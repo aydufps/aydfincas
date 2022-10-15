@@ -1,9 +1,11 @@
 import argparse
 from datetime import date, datetime
+
 from flask_restful import Resource, reqparse
 from index import api, db
 from modules.administrador.domain.models.Rol import Rol
-from modules.shared.infrastructure.repositories.parsemodel import hasRequiredFields, parsemodel
+from modules.shared.infrastructure.repositories.parsemodel import (
+    hasRequiredFields, parsemodel)
 from modules.veterinario.domain.models.Animal import Animal
 
 
@@ -74,6 +76,8 @@ class Animales(Resource):
 
 
 class AnimalRouter(Resource):
+    def get(self, id):
+        return Animal.query.get_or_404(id).asJSON()
 
     def delete(self, id):
         item = Animal.query.get(id)

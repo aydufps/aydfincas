@@ -2,6 +2,12 @@
 
 [API_URL](https://aydfincas.herokuapp.com/)
 
+## Ejecutar App
+
+```
+python -m flask run
+```
+
 ```
 npm i -g heroku
 heroku login
