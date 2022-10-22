@@ -1,14 +1,12 @@
 # import necessary packages
 
+import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import smtplib
-
-from modules.administrador.domain.services.usuarios import UsuarioR
 
 
 class SendEmail(object):
-    def sendTextEmail(self, emisor, receptor, subject, message, password, name, id):
+    def sendTextEmail(self, emisor, receptor, subject, message, password, name, id, urlLink, desc, tituloLabel):
         # create message object instance
         msg = MIMEMultipart()
 
@@ -123,11 +121,11 @@ class SendEmail(object):
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td class="esd-block-text es-p10t" align="left">
-                                                                                        <p style="font-size: 20px; font-family: helvetica, 'helvetica neue', arial, verdana, sans-serif;">Ingresa al formulario y cambia tu clave de usuario</p>
+                                                                                        <p style="font-size: 20px; font-family: helvetica, 'helvetica neue', arial, verdana, sans-serif;">@desc</p>
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td class="esd-block-button es-p25t h-auto" align="center" height="73"><span class="es-button-border" style="border-radius: 5px; border-width: 2px; border-color: #333333; background: #132743;"><a href="@url" class="es-button es-button-1655593772118" target="_blank" style="border-radius: 5px; border-top-width: 10px; border-bottom-width: 10px; background: #132743; border-color: #132743; color: #f8efd4; font-family: helvetica, &quot;helvetica neue&quot;, arial, verdana, sans-serif; font-size: 20px;">Cambiar mi clave</a></span></td>
+                                                                                    <td class="esd-block-button es-p25t h-auto" align="center" height="73"><span class="es-button-border" style="border-radius: 5px; border-width: 2px; border-color: #333333; background: #132743;"><a href="@url" class="es-button es-button-1655593772118" target="_blank" style="border-radius: 5px; border-top-width: 10px; border-bottom-width: 10px; background: #132743; border-color: #132743; color: #f8efd4; font-family: helvetica, &quot;helvetica neue&quot;, arial, verdana, sans-serif; font-size: 20px;">@tituloLabel</a></span></td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
@@ -152,11 +150,13 @@ class SendEmail(object):
 
 </html>
         """
-        url = "https://aydufps.github.io/ vistas/registrarclave/index.html?id=" + \
-            str(id)
+        # url = "https://aydufps.github.io/vistas/registrarclave/index.html?id=" + \
+        #     str(id)
         html = html.replace("\xf3", " ")
         html = html.replace("alias", name)
-        html = html.replace("@url", url)
+        html = html.replace("@url", urlLink)
+        html = html.replace("@desc", desc)
+        html = html.replace("@tituloLabel", tituloLabel)
         part2 = MIMEText(html, 'html')
         # setup the parameters of the message
         # password =
@@ -193,9 +193,29 @@ obj.sendTextEmail(emisor, receptor, asunto, mensaje, clave) '''
 
 def enviarEmail(correo, name, id):
     emisor = "jefersonurielhc@ufps.edu.co"
-    receptor = correo  # "asimplemailmore@gmail.com"
-    asunto = "Cambio de clave"
+    receptor = correo
+    asunto = "Cambio de clave - Gestion de fincas Ganaderas"
     mensaje = ""
     clave = "mjsytbqwyfgsgzdg"
+    urlLink = "https://aydufps.github.io/vistas/registrarclave/index.html?id=" + \
+        str(id)
+    desc = "Ingresa al formulario y cambia tu clave de usuario"
+    tituloLabel = "Cambiar mi clave"
     obj = SendEmail()
-    obj.sendTextEmail(emisor, receptor, asunto, mensaje, clave, name, id)
+    obj.sendTextEmail(emisor, receptor, asunto,
+                      mensaje, clave, name, id, urlLink, desc, tituloLabel)
+
+
+def enviarEmailNuevoUsuario(correo, name, id):
+    emisor = "jefersonurielhc@ufps.edu.co"
+    receptor = correo
+    asunto = "Registro - Gestion de fincas Ganaderas"
+    mensaje = ""
+    clave = "mjsytbqwyfgsgzdg"
+    urlLink = "https://aydufps.github.io/vistas/registrarclave/index.html?id=" + \
+        str(id)
+    desc = "Has sido registrado en Gestion de fincas Ganaderas"
+    tituloLabel = "Establecer mi clave"
+    obj = SendEmail()
+    obj.sendTextEmail(emisor, receptor, asunto,
+                      mensaje, clave, name, id, urlLink, desc, tituloLabel)
