@@ -57,6 +57,7 @@ class Animales(Resource):
         parser.add_argument('padre_id', type=str)
         parser.add_argument('madre_id', type=str)
         parser.add_argument('detalles', type=str)
+        parser.add_argument('precio', type=str)
         parser.add_argument('fecha_nacimiento', type=valid_date)
         parser.add_argument('genero', type=bool)
         parser.add_argument('enVenta', type=bool)
@@ -65,6 +66,7 @@ class Animales(Resource):
         item = Animal.query.get_or_404(id)
         item.nombre = item.nombre if args["nombre"] is None else args["nombre"]
         item.detalles = item.detalles if args["detalles"] is None else args["detalles"]
+        item.precio = item.precio if args["precio"] is None else args["precio"]
         item.padre_id = item.padre_id if args["padre_id"] is None else args["padre_id"]
         item.madre_id = item.madre_id if args["madre_id"] is None else args["madre_id"]
         item.fecha_nacimiento = item.fecha_nacimiento if args[

@@ -9,6 +9,7 @@ class Animal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     detalles = db.Column(db.String(100), nullable=False, default="")
+    precio = db.Column(db.String(100), nullable=False, default="")
     estado = db.Column(db.Boolean, nullable=False, default=True)
     genero = db.Column(db.Boolean,  nullable=False, default=False)
     enVenta = db.Column(db.Boolean,  nullable=False, default=False)
@@ -24,6 +25,7 @@ class Animal(db.Model):
             "id": self.id,
             "nombre": self.nombre,
             "detalles": self.detalles,
+            "precio": self.precio,
             "estado": self.estado,
             "genero": self.genero,
             "enVenta": self.enVenta,
